@@ -33,7 +33,7 @@ const $timer = document.querySelector('#timer');
 
 let min = 0,
     sec = 0;
-    miliSec = 0;
+miliSec = 0;
 
 let timer;
 
@@ -43,13 +43,13 @@ function callTimer() {
         if (miliSec === 99) {
             miliSec = 0;
             sec++;
-            if (sec === 60)  {
+            if (sec === 60) {
                 sec = 0;
                 min++;
             }
         }
     }
-    else{
+    else {
         miliSec = 0;
     }
     $timer.textContent = min + ":" + sec;
@@ -90,87 +90,117 @@ function mezclarArray(array) {
 
 };
 
-function asignarImagenes(){
+function asignarImagenes() {
     const $frenteTarjetas = document.querySelectorAll(".tarjeta-frente");
 
-    $frenteTarjetas.forEach((e, index)=>{
-        e.innerHTML = '<img class="img-fluid" src="img/'+cards[index]+'.png" alt="" srcset="">';
+    $frenteTarjetas.forEach((e, index) => {
+        e.innerHTML = '<img class="img-fluid" src="img/' + cards[index] + '.png" alt="" srcset="">';
         e.dataset.valor = cards[index];
         e.id = index;
     });
 };
 
 function manejarInputs() {
-    let tarjetaSeleccionada = [];
-    const $cuadro = document.querySelectorAll(".tarjeta");
-    $cuadro.forEach((e) => {
-        e.onclick = function () {
-            const $reversoTarjeta = e.children[1];
-            const $frenteTarjeta = e.children[0];
-            mostrarTarjeta($reversoTarjeta);
-            cantidadIntentos++;
-            if(tarjetaSeleccionada.length == 0){
-                tarjetaSeleccionada.push($frenteTarjeta.dataset.valor);
-                tarjetaSeleccionada.push($frenteTarjeta.id);
-            }else if(tarjetaSeleccionada[0] === $frenteTarjeta.dataset.valor && tarjetaSeleccionada[1] !== $frenteTarjeta.id){
-                document.getElementById(tarjetaSeleccionada[1]).parentElement.classList.add("correcto");
-                $reversoTarjeta.parentElement.classList.add("correcto");
-                tarjetaSeleccionada = [];
-                paresEncontrados ++;
-            }else{
-                const $tarjetaAnterior = document.getElementById(tarjetaSeleccionada[1]).parentElement.children[1];
-                tarjetaSeleccionada = [];
-                console.log($tarjetaAnterior);
-                setTimeout(function(){
-                    if(!$reversoTarjeta.parentElement.classList.contains("correcto")){
-                        ocultarTarjeta($reversoTarjeta)
-                    };
-                    if(!$tarjetaAnterior.parentElement.classList.contains("correcto")){
-                        ocultarTarjeta($tarjetaAnterior);
-                    };
-                }, 500);
-            }
-            if(paresEncontrados === 12){
-                finDelJuego();
-            }
+
+    let tarjetaActual = {
+        frente: "",
+        reverso: "",
+        tarjeta: ""
+    };
+
+    let primeraTarjeta = null;
+
+    const $tablero = document.querySelector("#tablero");
+
+    $tablero.onclick = function (e) {
+
+        if (e.target.classList.contains("img-fluid")) {
+            const $tarjeta = e.target.parentElement.parentElement;
+            manejarClickTarjeta($tarjeta);
         };
-    });
+
+        function manejarClickTarjeta(tarjeta) {
+
+            tarjetaActual = {
+                frente: tarjeta.children[0],
+                reverso: tarjeta.children[1],
+                tarjeta: tarjeta
+            };
+
+            mostrarTarjeta(tarjetaActual.reverso);
+
+            if (primeraTarjeta === null) {
+
+                primeraTarjeta = {
+                    frente: tarjeta.children[0],
+                    reverso: tarjeta.children[1],
+                    tarjeta: tarjeta
+                };
+                cantidadIntentos++;
+            }
+            if (primeraTarjeta !== null && tarjetaActual.frente.id !== primeraTarjeta.frente.id) {
+                if (tarjetasIguales(tarjetaActual.frente, primeraTarjeta.frente)) {
+                    mostrarAcierto(tarjetaActual.tarjeta);
+                    mostrarAcierto(primeraTarjeta.tarjeta);
+                    paresEncontrados++;
+                    primeraTarjeta = null;
+                } else {
+                    ocultarTarjeta(tarjetaActual.reverso);
+                    ocultarTarjeta(primeraTarjeta.reverso);
+                    primeraTarjeta = null;
+                };
+                cantidadIntentos++;
+            };
+        };
+        if (paresEncontrados === 12) {
+            finDelJuego();
+        };
+    };
 };
 
-function mostrarTarjeta(tarjeta){
+function mostrarTarjeta(tarjeta) {
     tarjeta.classList.add("mostrar");
-    tarjeta.classList.remove("ocultar");   
+    tarjeta.classList.remove("ocultar");
 };
 
-function ocultarTarjeta(tarjeta){
-    tarjeta.classList.remove("mostrar");
-    tarjeta.classList.add("ocultar");  
+function ocultarTarjeta(tarjeta) {
+    setTimeout(function () {
+        tarjeta.classList.remove("mostrar");
+        tarjeta.classList.add("ocultar");
+    }, 500);
 };
 
-function prepararPartida(){
+function mostrarAcierto(tarjeta) {
+    tarjeta.classList.add("correcto");
+}
+
+function tarjetasIguales(tarjeta1, tarjeta2) {
+    return tarjeta1.dataset.valor === tarjeta2.dataset.valor && !(tarjeta1.id === tarjeta2.id);
+}
+
+function prepararPartida() {
     startTimer();
 
     mezclarArray(cards);
 
     asignarImagenes();
-    
+
     manejarRonda();
 };
 
-function manejarRonda(){
-    
+function manejarRonda() {
+
     manejarInputs();
 };
 
-function finDelJuego(){
+function finDelJuego() {
     stopTimer();
     Swal.fire({
         icon: 'success',
         title: `Encontraste todos los pares!`,
         text: `Sólo te tomó ${cantidadIntentos} intentos`,
-        html: `Duración de la partida ${min} minutos y ${sec} segundos`,
         footer: '<a href>Click acá para volver a jugar</a>'
-      });
+    });
 }
 
 prepararPartida();
