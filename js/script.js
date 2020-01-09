@@ -25,6 +25,10 @@ const cards = [
     "vsc"
 ];
 
+let cantidadIntentos = 0;
+
+let paresEncontrados = 0;
+
 function mezclarArray(array) {
 
     let currentIndex = array.length, temporaryValue, randomIndex;
@@ -61,20 +65,26 @@ function manejarInputs() {
             const $reversoTarjeta = e.children[1];
             const $frenteTarjeta = e.children[0];
             mostrarTarjeta($reversoTarjeta);
+            cantidadIntentos++;
             if(tarjetaSeleccionada.length == 0){
                 tarjetaSeleccionada.push($frenteTarjeta.dataset.valor);
                 tarjetaSeleccionada.push($frenteTarjeta.id);
             }else if(tarjetaSeleccionada[0] === $frenteTarjeta.dataset.valor && tarjetaSeleccionada[1] !== $frenteTarjeta.id){
                 document.getElementById(tarjetaSeleccionada[1]).parentElement.classList.add("correcto");
                 $reversoTarjeta.parentElement.classList.add("correcto");
+                paresEncontrados ++;
             }else{
-                const perdon = document.getElementById(tarjetaSeleccionada[1]).parentElement.children[1];
+                const $tarjetaAnterior = document.getElementById(tarjetaSeleccionada[1]).parentElement.children[1];
                 tarjetaSeleccionada = [];
-                console.log(perdon);
+                console.log($tarjetaAnterior);
                 setTimeout(function(){
-                    ocultarTarjeta($reversoTarjeta)
-                    ocultarTarjeta(perdon);
-                }, 300);
+                    if(!$reversoTarjeta.parentElement.classList.contains("correcto")){
+                        ocultarTarjeta($reversoTarjeta)
+                    };
+                    if(!$tarjetaAnterior.parentElement.classList.contains("correcto")){
+                        ocultarTarjeta($tarjetaAnterior);
+                    };
+                }, 500);
             }
         };
     });
