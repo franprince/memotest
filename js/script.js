@@ -29,6 +29,49 @@ let cantidadIntentos = 0;
 
 let paresEncontrados = 0;
 
+const $timer = document.querySelector('#timer');
+
+let min = 0,
+    sec = 0;
+    miliSec = 0;
+
+let timer;
+
+function callTimer() {
+    miliSec++;
+    if (miliSec < 100) {
+        if (miliSec === 99) {
+            miliSec = 0;
+            sec++;
+            if (sec === 60)  {
+                sec = 0;
+                min++;
+            }
+        }
+    }
+    else{
+        miliSec = 0;
+    }
+    $timer.textContent = min + ":" + sec;
+}
+
+
+function startTimer() {
+    timer = setInterval(callTimer, 10);
+}
+
+function stopTimer() {
+    clearInterval(timer);
+}
+
+// function reset() {
+//     stop();
+//     min = 0;
+//     sec = 0;
+//     miliSec = 0;
+//     document.getElementById("timer").innerHTML = min + ":" + sec;
+// }
+
 function mezclarArray(array) {
 
     let currentIndex = array.length, temporaryValue, randomIndex;
@@ -72,6 +115,7 @@ function manejarInputs() {
             }else if(tarjetaSeleccionada[0] === $frenteTarjeta.dataset.valor && tarjetaSeleccionada[1] !== $frenteTarjeta.id){
                 document.getElementById(tarjetaSeleccionada[1]).parentElement.classList.add("correcto");
                 $reversoTarjeta.parentElement.classList.add("correcto");
+                tarjetaSeleccionada = [];
                 paresEncontrados ++;
             }else{
                 const $tarjetaAnterior = document.getElementById(tarjetaSeleccionada[1]).parentElement.children[1];
@@ -85,6 +129,9 @@ function manejarInputs() {
                         ocultarTarjeta($tarjetaAnterior);
                     };
                 }, 500);
+            }
+            if(paresEncontrados === 12){
+                finDelJuego();
             }
         };
     });
@@ -101,6 +148,8 @@ function ocultarTarjeta(tarjeta){
 };
 
 function prepararPartida(){
+    startTimer();
+
     mezclarArray(cards);
 
     asignarImagenes();
@@ -112,6 +161,17 @@ function manejarRonda(){
     
     manejarInputs();
 };
+
+function finDelJuego(){
+    stopTimer();
+    Swal.fire({
+        icon: 'success',
+        title: `Encontraste todos los pares!`,
+        text: `Sólo te tomó ${cantidadIntentos} intentos`,
+        html: `Duración de la partida ${min} minutos y ${sec} segundos`,
+        footer: '<a href>Click acá para volver a jugar</a>'
+      });
+}
 
 prepararPartida();
 
