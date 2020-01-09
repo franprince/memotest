@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "cypress-run": "cypress run",
+    "cypress-dev": "cypress open",
+    "test": "run-p start cypress-run",
+    "test-dev": "run-p start cypress-dev"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +18,7 @@
   },
   "devDependencies": {
     "cypress": "^3.8.1",
-    "http-server": "^0.12.1"
+    "http-server": "^0.12.1",
+    "npm-run-all": "^4.1.5"
   }
 }
