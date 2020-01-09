@@ -52,7 +52,15 @@ function callTimer() {
     else {
         miliSec = 0;
     }
-    $timer.textContent = min + ":" + sec;
+    function mostrarDosDigitos(numero){
+        if(numero<10){
+            numero = "0" + numero;
+            return numero;
+        }else{
+            return numero;
+        };
+    };
+    $timer.textContent = mostrarDosDigitos(min) + ":" + mostrarDosDigitos(sec);
 }
 
 
