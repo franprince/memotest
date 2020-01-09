@@ -25,8 +25,6 @@ const cards = [
     "vsc"
 ];
 
-let coso;
-
 function mezclarArray(array) {
 
     let currentIndex = array.length, temporaryValue, randomIndex;
