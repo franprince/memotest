@@ -168,7 +168,6 @@ function finDelJuego(){
         icon: 'success',
         title: `Encontraste todos los pares!`,
         text: `Sólo te tomó ${cantidadIntentos} intentos`,
-        html: `Duración de la partida ${min} minutos y ${sec} segundos`,
         footer: '<a href>Click acá para volver a jugar</a>'
       });
 }
