@@ -10,10 +10,11 @@
   "license": "ISC",
   "dependencies": {
     "bootstrap": "^4.4.1",
-    "flip": "github:nnattawat/flip",
-    "jquery": "^3.4.1"
+    "jquery": "^3.4.1",
+    "sweetalert2": "^9.5.4"
   },
   "devDependencies": {
-    "cypress": "^3.8.1"
+    "cypress": "^3.8.1",
+    "http-server": "^0.12.1"
   }
 }
