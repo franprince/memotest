@@ -1,0 +1,27 @@
+.tarjeta-frente, .tarjeta img {
+    position: relative;
+    
+  }
+  .tarjeta-frente img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+  }
+
+  .mostrar img{
+      opacity: 0%;
+      transition: opacity 500ms;
+  }
+
+  .ocultar img{
+      opacity: 100%;
+      transition: opacity 500ms;
+  }
+
+  .correcto{
+      background-color: green;
+  }
+  .correcto .tarjeta-frente img{
+      opacity: 20%;
+  }
