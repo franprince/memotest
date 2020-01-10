@@ -20,7 +20,7 @@
   }
 
   .correcto{
-      background-color: green;
+      background-color: rgb(87, 196, 87);
   }
   .correcto .tarjeta-frente img{
       opacity: 45%;
