@@ -1,4 +1,4 @@
-const URL = "http://172.26.128.1:8080";
+const URL = "http://172.22.48.1:8080";
 
 context("Memotest", () => {
     before(()=>{
@@ -55,6 +55,24 @@ context("Memotest", () => {
                 cy.get(par[1]).click();
             });
         });
+    });
+
+    describe("Checkea eventos cuando el juego termina", ()=>{
+        it('Espera que se muestre el popup', ()=>{
+            cy.get('.swal2-popup').should('exist');
+        });
+        it('Clickea OK en el popup', ()=>{
+            cy.get('.swal2-confirm').click();
+        });
+        it('Se asegura que el popup desapareció', ()=>{
+            cy.get('.swal2-popup').should('not.exist');
+        });
+        it('Revisa que el timer no siga contando.', ()=>{
+            const tomarTiempo1 = cy.get("#timer").textcontent;
+            cy.wait(2000);
+            const tomarTiempo2 = cy.get("#timer").textcontent;
+            expect(tomarTiempo1 === tomarTiempo2);
+        });   
     });
 });
 
