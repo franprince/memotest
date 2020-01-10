@@ -33,39 +33,40 @@ const $timer = document.querySelector('#timer');
 
 let min = 0,
     sec = 0;
-miliSec = 0;
+    hora = 0;
 
 let timer;
 
 function callTimer() {
-    miliSec++;
-    if (miliSec < 100) {
-        if (miliSec === 99) {
-            miliSec = 0;
-            sec++;
-            if (sec === 60) {
-                sec = 0;
-                min++;
+    sec++;
+    if (sec <= 60) {
+        if (sec === 60) {
+            sec = 0;
+            min++;
+            if (min === 60) {
+                min = 0;
+                hora++;
             }
         }
     }
     else {
-        miliSec = 0;
+        sec = 0;
     }
-    function mostrarDosDigitos(numero){
-        if(numero<10){
-            numero = "0" + numero;
-            return numero;
-        }else{
-            return numero;
-        };
-    };
     $timer.textContent = mostrarDosDigitos(min) + ":" + mostrarDosDigitos(sec);
-}
+};
+
+function mostrarDosDigitos(numero){
+    if(numero<10){
+        numero = "0" + numero;
+        return numero;
+    }else{
+        return numero;
+    };
+};
 
 
 function startTimer() {
-    timer = setInterval(callTimer, 10);
+    timer = setInterval(callTimer, 1000);
 }
 
 function stopTimer() {
