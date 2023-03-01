@@ -18,7 +18,7 @@
     "sweetalert2": "^9.5.4"
   },
   "devDependencies": {
-    "cypress": "^3.8.1",
-    "http-server": "^0.12.1"
+    "cypress": "^12.7.0",
+    "http-server": "^0.12.3"
   }
 }
